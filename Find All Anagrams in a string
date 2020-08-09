@@ -1,0 +1,34 @@
+class Solution {
+    public List<Integer> findAnagrams(String s, String p) {
+        //use hashmap for sliding window 
+        List<Integer> result = new ArrayList<>();
+        HashMap<Character, Integer> pMap = countCharacter(p);
+        HashMap<Character, Integer> sMap = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            sMap.put(s.charAt(i), sMap.getOrDefault(s.charAt(i), 0) + 1);
+            if (i >= p.length()) {
+                //remove first one on the left
+                char left = s.charAt(i - p.length());
+                if (sMap.get(left) == 1) {
+                    sMap.remove(left);
+                } else {
+                    sMap.put(left, sMap.get(left) - 1);
+                }
+            
+            }
+            if (sMap.equals(pMap)){
+                result.add(i - p.length() + 1);
+            }        
+        }
+       
+        return result;
+    }
+    private HashMap<Character, Integer> countCharacter(String s) {
+        HashMap<Character, Integer> map = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            map.put(s.charAt(i), map.getOrDefault(s.charAt(i), 0) + 1);
+        }
+        return map;
+        
+    }
+}
