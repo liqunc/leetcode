@@ -1,0 +1,29 @@
+class Solution {
+    public List<String> topKFrequent(String[] words, int k) {
+        //use max heap
+        PriorityQueue<Map.Entry<String,Integer>> maxHeap = new PriorityQueue<>(k, (a,b) -> a.getValue() == b.getValue() ? b.getKey().compareTo(a.getKey()): a.getValue() - b.getValue());
+        
+        //store string count
+        HashMap<String, Integer> map = new HashMap<>();
+        for (int i = 0; i < words.length; i++) {
+            map.put(words[i], map.getOrDefault(words[i], 0) + 1);
+        }
+        
+        //put entry into max heap
+        for (Map.Entry<String, Integer> entry: map.entrySet()) {
+            maxHeap.offer(entry);
+            if (maxHeap.size() > k) {
+                maxHeap.poll();
+            }
+        }
+        
+        //return result
+        List<String> result = new ArrayList<>();
+        while (!maxHeap.isEmpty()) {
+            result.add(0, maxHeap.poll().getKey());
+        }
+        
+        return result;
+        
+    }
+}
